@@ -13,6 +13,7 @@ class GeocodingServiceTests {
 
     private validAddress = 'Bray, Co. Wicklow, Ireland'
     private invalidAddress = 'not a valid address'
+    private addressMatchingMultipleLocations = 'Dublin'
 
     void testGeocodeValidAddress() {
         Point location = service.getPoint(validAddress)
@@ -22,6 +23,16 @@ class GeocodingServiceTests {
         List<Point> locations = service.getPoints(validAddress)
         assertEquals 1, locations.size()
         assertEquals location, locations[0]
+    }
+
+    void testGeocodeWithMultipleResults() {
+        List<Point> locations = service.getPoints(addressMatchingMultipleLocations)
+        assertTrue locations.size() > 1
+
+        // limit the number of results returned
+        def limit = 1
+        locations = service.getPoints(addressMatchingMultipleLocations, [max: limit])
+        assertEquals limit, locations.size()
     }
 
     void testGeocodeInvalidAddress() {

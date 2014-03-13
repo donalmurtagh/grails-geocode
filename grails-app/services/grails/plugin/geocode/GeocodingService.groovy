@@ -21,36 +21,65 @@ class GeocodingService {
 
     /**
      * Geocode an address
-     * @param address
-     * @return One location (lat/lng) if geocoding was successful, otherwise null
+     *
+     * @param address the address to be geocoded
+     * @param optionalArgs parameters that are defined as optional in the <a href="https://developers.google.com/maps/documentation/geocoding/#geocoding"API docs</a>.
+     * Additionally, two further arguments may be provided in this map
+     * <ul>
+     *     <li>sensor - a boolean that indicates whether or not the geocoding request comes from a device with a location sensor. If omitted, false is assumed</li>
+     *     <li>max - an integer that limits the number of results returned
+     * </ul>
+     * If none of these arguments are required, this parameter may be omitted
+     *
+     * @return list of locations if geocoding was successful, otherwise an empty list
      * @throws GeocodingException
      */
-    Point getPoint(String address) throws GeocodingException {
+    List<Point> getPoints(String address, Map optionalArgs = [:]) throws GeocodingException {
 
-        log.debug "Attempting to geocode address: $address"
-        def latLngs = getPoints(address)
+        // clone the args to prevent side effects
+        Map queryParams = optionalArgs.clone()
+        queryParams.address = address
 
-        if (latLngs) {
-            log.debug "Geocoded address '$address' to ${latLngs[0]}"
-            return latLngs[0]
+        // if the sensor param is not specified it defaults to false
+        if (queryParams.sensor == null) {
+            queryParams.sensor = false
         }
-        log.warn "Failed to geocode address $address"
-    }
 
-    /**
-     * Geocode an address
-     * @param address
-     * @return list of locations if geocoding was successful otherwise an empty list
-     * @throws GeocodingException
-     */
-    List<Point> getPoints(String address) throws GeocodingException {
-        def points = submitGeocodeRequest([sensor: 'false', address: address])
+        Integer maxResults = optionalArgs.remove('max')
+        def jsonPoints = submitGeocodeRequest(queryParams)
 
-        points.collect { point ->
+        List<Point> points = jsonPoints.collect { point ->
             point.geometry.location.latitude
             new Point(latitude: point.geometry.location.lat, longitude: point.geometry.location.lng)
         }
+
+        // truncate the number of results returned if necessary
+        maxResults && points.size() > maxResults ? points[0..<maxResults] : points
     }
+
+
+    /**
+     * Geocode an address
+     *
+     * @param address the address to be geocoded
+     * @param optionalArgs parameters that are defined as optional in the <a href="https://developers.google.com/maps/documentation/geocoding/#geocoding"API docs</a>.
+     * Additionally, two further arguments may be provided in this map
+     * <ul>
+     *     <li>sensor - a boolean that indicates whether or not the geocoding request comes from a device with a location sensor. If omitted, false is assumed</li>
+     * </ul>
+     * If none of these arguments are required, this parameter may be omitted
+     *
+     * @return A single location (lat/lng) if geocoding was successful, otherwise null
+     * @throws GeocodingException
+     */
+    Point getPoint(String address, Map optionalArgs = [:]) throws GeocodingException {
+
+        optionalArgs.max = 1
+        List<Point> points = getPoints(address, optionalArgs)
+
+        points ? points[0] : null
+    }
+
 
     private submitGeocodeRequest(Map queryParams) throws GeocodingException {
 
@@ -64,7 +93,7 @@ class GeocodingService {
                 return json.results
 
             } else {
-                throw new GeocodingException("Error: ${json.error_message}, Status: ${json.status}")
+                throw new GeocodingException("Error: ${json.error_message} Status: ${json.status}")
             }
         }
     }
