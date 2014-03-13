@@ -34,7 +34,7 @@ class GeocodingService {
      * @return a list of addresses
      * @throws GeocodingException
      */
-    List<Map> getAddresses(Point point, Map optionalArgs = [:]) throws GeocodingException {
+    List<Address> getAddresses(Point point, Map optionalArgs = [:]) throws GeocodingException {
 
         // clone the args to prevent side effects
         Map queryParams = optionalArgs.clone()
@@ -45,7 +45,40 @@ class GeocodingService {
             queryParams.sensor = false
         }
 
-        submitGeocodeRequest(queryParams)
+        def results = submitGeocodeRequest(queryParams)
+
+        // convert the each nested map to an Address instance
+        results.collect { result ->
+            def geometry = result.geometry
+            def viewport = geometry.viewport
+            new Address(
+                    formattedAddress: result.formatted_address,
+                    types: result.types,
+                    addressComponents: result.address_components.collect { addressComponent ->
+                        new AddressComponent(
+                                longName: addressComponent.long_name,
+                                shortName: addressComponent.short_name,
+                                types: addressComponent.types
+                        )
+                    },
+                    geometry: new Geometry(
+                            viewport: new Viewport(
+                                    southWest: new Point(
+                                            latitude: viewport.southwest.lat,
+                                            longitude: viewport.southwest.lng
+                                    ),
+                                    northEast: new Point(
+                                            latitude: viewport.northeast.lat,
+                                            longitude: viewport.northeast.lng
+                                    )
+                            ),
+                            locationType: geometry.location_type,
+                            location: new Point(
+                                    latitude: geometry.location.lat,
+                                    longitude: geometry.location.lng)
+                    )
+            )
+        }
     }
 
     /**
@@ -62,13 +95,12 @@ class GeocodingService {
      * @return a list of addresses
      * @throws GeocodingException
      */
-    def getAddress(Point point, Map optionalArgs = [:]) throws GeocodingException {
+    Address getAddress(Point point, Map optionalArgs = [:]) throws GeocodingException {
 
         optionalArgs.max = 1
-        List<Map> addresses = getAddresses(point, optionalArgs)
+        List<Address> addresses = getAddresses(point, optionalArgs)
         addresses ? addresses[0] : null
     }
-
 
     /**
      * Geocode an address
@@ -103,7 +135,6 @@ class GeocodingService {
             new Point(latitude: point.geometry.location.lat, longitude: point.geometry.location.lng)
         }
     }
-
 
     /**
      * Geocode an address

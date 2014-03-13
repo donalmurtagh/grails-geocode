@@ -42,7 +42,7 @@ class GeocodingServiceTests {
 
     void testReverseGeocode() {
         Point location = new Point(latitude: 40.714224, longitude: -73.961452)
-        List<Map> results = service.getAddresses(location)
+        def results = service.getAddresses(location)
         assertTrue results.size() > 1
 
         // limit the number of results returned
