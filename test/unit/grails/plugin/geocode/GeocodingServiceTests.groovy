@@ -40,6 +40,21 @@ class GeocodingServiceTests {
         assertEquals Collections.emptyList(), service.getPoints(invalidAddress)
     }
 
+    void testReverseGeocode() {
+        Point location = new Point(latitude: 40.714224, longitude: -73.961452)
+        List<Map> results = service.getAddresses(location)
+        assertTrue results.size() > 1
+
+        // limit the number of results returned
+        def limit = 1
+        results = service.getAddresses(location, [max: limit])
+        assertEquals limit, results.size()
+
+        // request just a single address
+        def address = service.getAddress(location)
+        assertEquals results[0], address
+    }
+
     private void compareApproximately(String expectedValue, Float floatValue, Integer decimalPlaces = 1) {
         assertTrue new BigDecimal(expectedValue) == floatValue.round(decimalPlaces).toBigDecimal()
     }
