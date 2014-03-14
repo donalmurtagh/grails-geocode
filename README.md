@@ -5,8 +5,6 @@ This Grails plugin provides a Spring bean named `geocodingService` which uses th
 The service provides two methods for geocoding, i.e. converting an address to latitude/longitude coordinates.
 One of these methods returns a single result and the other returns a list of results.
 
-### Example
-
 ````groovy
 // get a single location matching the provided address
 Point location = geocodingService.getPoint('Bray, Co. Wicklow, Ireland')
@@ -24,8 +22,6 @@ A second optional Map argument may be provided to either of the above methods. T
 * `sensor` a boolean that indicates whether or not the request comes from a device with a location sensor. If omitted, false is assumed.
 * `max` an integer that limits the number of results returned. This value is ignored when `getPoint` is called (because this method always returns at most 1 result)
 * parameters that are defined as optional in the [API docs](https://developers.google.com/maps/documentation/geocoding/#geocoding)
-
-### Example
 
 ````groovy
 // geocode the address 'Newcastle' with the results biased to Ireland.
@@ -54,8 +50,6 @@ A second optional Map argument may be provided to either of the above methods. T
 * `sensor` a boolean that indicates whether or not the request comes from a device with a location sensor. If omitted, false is assumed.
 * `max` an integer that limits the number of results returned. This value is ignored when `getAddress` is called (because this method always returns at most 1 result)
 * parameters that are defined as optional in the [API docs](https://developers.google.com/maps/documentation/geocoding/#ReverseGeocoding)
-
-### Example
 
 ````groovy
 // convert a coordinate to a list of addresses in the French language.
