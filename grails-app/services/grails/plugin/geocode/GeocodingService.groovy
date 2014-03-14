@@ -47,7 +47,7 @@ class GeocodingService {
 
         def results = submitGeocodeRequest(queryParams)
 
-        // convert the each nested map to an Address instance
+        // convert the nested maps to a list of Address
         results.collect { result ->
             def geometry = result.geometry
             def viewport = geometry.viewport
