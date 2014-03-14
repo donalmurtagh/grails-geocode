@@ -13,8 +13,8 @@ Point location = geocodingService.getPoint('Bray, Co. Wicklow, Ireland')
 Float latitude = location.latitude
 Float longitude = location.longitude
 
-// get a list of locations matching the provided address (there are several places named Dublin)
-List<Point> location = geocodingService.getPoints('Dublin')
+// get a list of locations matching the address 'Birmingham'
+List<Point> location = geocodingService.getPoints('Birmingham')
 ````
 
 ## Optional arguments
