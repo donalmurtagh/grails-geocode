@@ -1,7 +1,7 @@
 This Grails plugin provides a Spring bean named `geocodingService` which uses the
 [Google Geocoding API](https://developers.google.com/maps/documentation/geocoding) to perform geocoding and reverse geocoding.
 
-# Geocoding
+## Geocoding
 The service provides two methods for geocoding, i.e. converting an address to latitude/longitude coordinates.
 One of these methods returns a single result and the other returns a list of results.
 
@@ -15,7 +15,7 @@ Float longitude = location.longitude
 List<Point> location = geocodingService.getPoints('Birmingham')
 ````
 
-## Optional arguments
+### Optional arguments
 
 A second optional Map argument may be provided to either of the above methods. This Map supports the following entries:
 
@@ -29,7 +29,7 @@ A second optional Map argument may be provided to either of the above methods. T
 List<Point> results = geocodingService.getPoint('Newcastle', [max: 2, region: 'ie'])
 ````
 
-# Reverse Geocoding
+## Reverse Geocoding
 The service provides two methods for reverse geocoding, i.e. converting a latitude/longitude coordinate to an address.
 One of these methods returns a single result and the other returns a list of results.
 
@@ -43,7 +43,7 @@ println address.formattedAddress
 List<Address> addresses = geocodingService.getAddresses(coordinate)
 ````
 
-## Optional arguments
+### Optional arguments
 
 A second optional Map argument may be provided to either of the above methods. This Map supports the following entries:
 
