@@ -58,7 +58,8 @@ A second optional Map argument may be provided to either of the above methods. T
 ### Example
 
 ````groovy
-// convert a coordinate to a list of addresses in the French language. A maximum of 2 results should be returned
+// convert a coordinate to a list of addresses in the French language.
+// A maximum of 2 results should be returned
 Point coordinate = new Point(latitude: 40.714224, longitude: -73.961452)
 List<Point> addresses = service.getAddresses(coordinate, [language: 'fr', max: 3])
 ````
