@@ -43,7 +43,7 @@ Point coordinate = new Point(latitude: 40.714224, longitude: -73.961452)
 Address address = geocodingService.getAddress(coordinate)
 println address.formattedAddress
 
-// get a list of addresses matching the provided coordinate
+// convert a coordinate to a list of addresses
 List<Address> addresses = geocodingService.getAddresses(coordinate)
 ````
 
