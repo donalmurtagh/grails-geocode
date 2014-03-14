@@ -28,8 +28,8 @@ A second optional Map argument may be provided to either of the above methods. T
 ### Example
 
 ````groovy
-// geocode the address 'Newcastle' with the results biased to Ireland. A maximum of 2 locations should be returned
-
+// geocode the address 'Newcastle' with the results biased to Ireland.
+// A maximum of 2 locations should be returned
 List<Point> results = geocodingService.getPoint('Newcastle', [max: 2, region: 'ie'])
 ````
 
