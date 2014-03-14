@@ -1,4 +1,5 @@
-A Grails plugin that provides a Spring bean named `geocodingService` which uses the Google maps web service to perform address geocoding and reverse geocoding.
+A Grails plugin that provides a Spring bean named `geocodingService` which uses the
+[Google Geocoding API](https://developers.google.com/maps/documentation/geocoding) to perform geocoding and reverse geocoding.
 
 # Geocoding
 The service provides two methods for geocoding, i.e. converting an address to a latitude/longitude coordinates.
