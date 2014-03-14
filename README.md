@@ -1,4 +1,4 @@
-A Grails plugin that provides a Spring bean named `geocodingService` which uses the
+This Grails plugin provides a Spring bean named `geocodingService` which uses the
 [Google Geocoding API](https://developers.google.com/maps/documentation/geocoding) to perform geocoding and reverse geocoding.
 
 # Geocoding
