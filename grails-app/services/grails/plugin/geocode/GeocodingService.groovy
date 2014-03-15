@@ -3,6 +3,10 @@ package grails.plugin.geocode
 import groovy.transform.InheritConstructors
 import groovyx.net.http.HTTPBuilder
 import org.apache.http.HttpStatus
+import org.apache.http.protocol.HTTP
+import org.codehaus.groovy.grails.commons.GrailsApplication
+
+import javax.annotation.PostConstruct
 
 /**
  * Uses the <a href="https://developers.google.com/maps/documentation/geocoding">Google Geocoding API</a>
@@ -12,7 +16,18 @@ class GeocodingService {
 
     static transactional = false
 
-    private final http = new HTTPBuilder('http://maps.googleapis.com')
+    GrailsApplication grailsApplication
+
+    private HTTPBuilder http = new HTTPBuilder('http://maps.googleapis.com')
+
+    @PostConstruct
+    private initializeBuilder() {
+        boolean https = grailsApplication.config.geocode?.useHttps
+
+        if (https) {
+            http = new HTTPBuilder('https://maps.googleapis.com')
+        }
+    }
 
     /**
      * Response status codes are <a href="https://developers.google.com/maps/documentation/geocoding/#StatusCodes">documented here</a>
@@ -156,7 +171,6 @@ class GeocodingService {
         List<Point> points = getPoints(address, optionalArgs)
         points ? points[0] : null
     }
-
 
     private submitGeocodeRequest(Map queryParams) throws GeocodingException {
 

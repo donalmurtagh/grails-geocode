@@ -57,3 +57,17 @@ A second optional Map argument may be provided to either of the above methods. T
 Point coordinate = new Point(latitude: 40.714224, longitude: -73.961452)
 List<Point> addresses = service.getAddresses(coordinate, [language: 'fr', max: 2])
 ````
+
+## Configuration
+
+### HTTPS
+By default requests are submitted to the Google Geocoding API over HTTP. To use HTTPS instead, add the following to `Config.groovy`
+
+````groovy
+geocode.useHttps = true
+````
+
+## Release History
+
+* 0.2 - Added support for HTTPS
+* 0.1 - Initial release
