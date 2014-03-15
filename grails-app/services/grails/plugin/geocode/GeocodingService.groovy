@@ -3,7 +3,6 @@ package grails.plugin.geocode
 import groovy.transform.InheritConstructors
 import groovyx.net.http.HTTPBuilder
 import org.apache.http.HttpStatus
-import org.apache.http.protocol.HTTP
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
 import javax.annotation.PostConstruct
@@ -18,14 +17,13 @@ class GeocodingService {
 
     GrailsApplication grailsApplication
 
-    private HTTPBuilder http = new HTTPBuilder('http://maps.googleapis.com')
+    private HTTPBuilder httpBuilder = new HTTPBuilder('https://maps.googleapis.com')
 
     @PostConstruct
     private initializeBuilder() {
-        boolean https = grailsApplication.config.geocode?.useHttps
 
-        if (https) {
-            http = new HTTPBuilder('https://maps.googleapis.com')
+        if (grailsApplication.config.geocode?.useHttp) {
+            httpBuilder = new HTTPBuilder('http://maps.googleapis.com')
         }
     }
 
@@ -176,7 +174,7 @@ class GeocodingService {
 
         Integer maxResults = queryParams.remove('max')
 
-        http.get(path: '/maps/api/geocode/json', query: queryParams) { resp, json ->
+        httpBuilder.get(path: '/maps/api/geocode/json', query: queryParams) { resp, json ->
 
             if (resp.status != HttpStatus.SC_OK) {
                 throw new GeocodingException("HTTP response error code: ${resp.status}")

@@ -60,14 +60,15 @@ List<Point> addresses = service.getAddresses(coordinate, [language: 'fr', max: 2
 
 ## Configuration
 
-### HTTPS
-By default requests are submitted to the Google Geocoding API over HTTP. To use HTTPS instead, add the following to `Config.groovy`
+### HTTP/HTTPS
+By default requests are submitted to the Google Geocoding API over HTTPS. To use HTTP instead, add the following to `Config.groovy`
 
 ````groovy
-geocode.useHttps = true
+geocode.useHttp = true
 ````
 
 ## Release History
 
+* 0.3 - Uses HTTPS by default
 * 0.2 - Added support for HTTPS
 * 0.1 - Initial release
