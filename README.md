@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/domurtag/grails-geocode.svg)](https://travis-ci.org/domurtag/grails-geocode)
+[![Build Status](https://travis-ci.org/donalmurtagh/grails-geocode.svg)](https://travis-ci.org/donalmurtagh/grails-geocode)
 
 This Grails plugin provides a Spring bean named `geocodingService` which uses the
 [Google Geocoding API](https://developers.google.com/maps/documentation/geocoding) to perform geocoding and reverse geocoding.
