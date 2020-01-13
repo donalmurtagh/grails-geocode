@@ -19,4 +19,4 @@ branches:
 only:
 - master
 
-script: grails clean && grails test-app --non-interactive --stacktrace
+script: grails clean && grails package-plugin --non-interactive --stacktrace
